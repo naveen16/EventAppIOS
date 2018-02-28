@@ -11,7 +11,7 @@ import Firebase
 
 class FavoritesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var ref: FIRDatabaseReference!
+    var ref: DatabaseReference!
     var userId: String!
     
     let favoritesToEvents = "FavoritesToEvents"
@@ -34,8 +34,8 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        ref = FIRDatabase.database().reference()
-        let user = FIRAuth.auth()?.currentUser
+        ref = Database.database().reference()
+        let user = Auth.auth().currentUser
         userId = user?.uid
         eventsTableView.dataSource = self
         eventsTableView.delegate = self
@@ -57,9 +57,9 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
         self.ref.child("users").child(userId).child("interested_events").observe(.value, with: { snapshot in
             self.eventObjectsArray = []
             self.eventsArray = []
-            for rest in snapshot.children.allObjects as! [FIRDataSnapshot] {
+            for rest in snapshot.children.allObjects as! [DataSnapshot] {
                 print(rest.key)
-                print("VALUE: \(rest.value)")
+                //print("VALUE: \(rest.value)")
                 self.interestedEventKeys.append(rest.key)
                 self.interestedEventValues.append(rest.value as! String)
                 self.ref.child("events").child(rest.value as! String).observe(.value, with: { snap in

@@ -12,7 +12,7 @@ import CoreLocation
 
 class AddEventViewController: UIViewController {
     
-    var ref: FIRDatabaseReference!
+    var ref: DatabaseReference!
     var userId: String!
     
     let addEventToEvents = "AddEventToEvents"
@@ -29,8 +29,8 @@ class AddEventViewController: UIViewController {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view, typically from a nib.
-        ref = FIRDatabase.database().reference()
-        let user = FIRAuth.auth()?.currentUser
+        ref = Database.database().reference()
+        let user = Auth.auth().currentUser
         userId = user?.uid
     }
     
@@ -50,7 +50,7 @@ class AddEventViewController: UIViewController {
         let eDescription = eventDescription.text
         var eventLatitude:Double = 0
         var eventLongitude:Double = 0
-        let defaultUrl = "https://firebasestorage.googleapis.com/v0/b/eventsapp-5e226.appspot.com/o/eventImage.jpg?alt=media&token=6a28ee98-95d4-4766-8395-2b46321dfa3f"
+        let defaultUrl = "https://firebasestorage.googleapis.com/v0/b/eventsapp-5e226.appspot.com/o/ACLImage.jpg?alt=media&token=d36e620c-f495-4e6b-b478-f863aae6cfe3"
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(eventAddress!) { (placemarks, error) in
             if error != nil {

@@ -11,7 +11,7 @@ import Firebase
 
 class AccountViewController: UIViewController {
     
-    var ref: FIRDatabaseReference!
+    var ref: DatabaseReference!
     var userId: String!
     
     @IBOutlet weak var nameLabel: UILabel!
@@ -23,8 +23,8 @@ class AccountViewController: UIViewController {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view, typically from a nib.
-        ref = FIRDatabase.database().reference()
-        let user = FIRAuth.auth()?.currentUser
+        ref = Database.database().reference()
+        let user = Auth.auth().currentUser
         userId = user?.uid
         self.ref.child("users").child(userId).child("name").observeSingleEvent(of: .value, with: { (snapshot) in
             self.nameLabel.text = snapshot.value as? String
@@ -39,7 +39,7 @@ class AccountViewController: UIViewController {
     
     @IBAction func logoutPress(_ sender: UIButton) {
         do {
-            try FIRAuth.auth()?.signOut()
+            try Auth.auth().signOut()
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
         }

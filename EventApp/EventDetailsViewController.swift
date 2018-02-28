@@ -11,7 +11,7 @@ import Firebase
 
 class EventDetailsViewController: UIViewController {
     
-    var ref: FIRDatabaseReference!
+    var ref: DatabaseReference!
     var userId: String!
     
     let eventDetailsToEvents = "EventDetailsToEvents"
@@ -33,8 +33,8 @@ class EventDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        ref = FIRDatabase.database().reference()
-        let user = FIRAuth.auth()?.currentUser
+        ref = Database.database().reference()
+        let user = Auth.auth().currentUser
         userId = user?.uid
         eventName.text = self.name
         eventDate.text = self.date

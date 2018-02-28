@@ -14,11 +14,17 @@ target 'EventApp' do
   target 'EventAppTests' do
     inherit! :search_paths
     # Pods for testing
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Database'
   end
 
   target 'EventAppUITests' do
     inherit! :search_paths
     # Pods for testing
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Database'
   end
 
 end

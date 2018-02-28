@@ -17,8 +17,8 @@ let ROTATION_MAX: Float = 1         //%%% the maximum rotation allowed in radian
 let ROTATION_STRENGTH: Float = 320  //%%% strength of rotation. Higher = weaker rotation
 let ROTATION_ANGLE: Float = 3.14/8  //%%% Higher = stronger rotation angle
 
-let CARD_HEIGHT: CGFloat = 386
-let CARD_WIDTH: CGFloat = 290
+let CARD_HEIGHT: CGFloat = 420
+let CARD_WIDTH: CGFloat = 330
 
 protocol DraggableViewDelegate {
     func cardSwipedLeft(_ card: UIView) -> Void
@@ -70,7 +70,7 @@ class DraggableView: UIView {
         self.layer.shadowOffset = CGSize(width: 1, height: 1);
     }
     
-    func beingDragged(_ gestureRecognizer: UIPanGestureRecognizer) -> Void {
+    @objc func beingDragged(_ gestureRecognizer: UIPanGestureRecognizer) -> Void {
         xFromCenter = Float(gestureRecognizer.translation(in: self).x)
         yFromCenter = Float(gestureRecognizer.translation(in: self).y)
         

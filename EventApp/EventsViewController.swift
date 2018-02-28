@@ -1,4 +1,4 @@
-//
+///
 //  EventsViewController.swift
 //  EventApp
 //
@@ -12,7 +12,7 @@ import CoreLocation
 
 class EventsViewController: UIViewController {
     
-    var ref: FIRDatabaseReference!
+    var ref: DatabaseReference!
     var userId: String!
     
     let logoutSegue = "logoutSegue"
@@ -31,12 +31,14 @@ class EventsViewController: UIViewController {
     
     var draggableBackground: DraggableViewBackground!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        ref = FIRDatabase.database().reference()
-        let user = FIRAuth.auth()?.currentUser
+        ref = Database.database().reference()
+        let user = Auth.auth().currentUser
         userId = user?.uid
+        
         
         draggableBackground = DraggableViewBackground(frame: self.view.frame)
         self.view.addSubview(draggableBackground)
@@ -54,7 +56,7 @@ class EventsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func goToEventDetails(_ sender:UITapGestureRecognizer){
+    @objc func goToEventDetails(_ sender:UITapGestureRecognizer){
         let event = draggableBackground.getEventObject()
         self.name = event.name
         self.date = event.date

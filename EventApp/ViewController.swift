@@ -15,14 +15,14 @@ extension UIViewController {
         view.addGestureRecognizer(tap)
     }
     
-    func dismissKeyboard() {
+    @objc func dismissKeyboard() {
         view.endEditing(true)
     }
 }
 
 class ViewController: UIViewController {
     
-    var ref: FIRDatabaseReference!
+    var ref: DatabaseReference!
     var userId: String!
     
     @IBOutlet weak var textFieldLoginEmail: UITextField!
@@ -34,8 +34,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view, typically from a nib.
-        ref = FIRDatabase.database().reference()
-        FIRAuth.auth()!.addStateDidChangeListener() { auth, user in
+        ref = Database.database().reference()
+        Auth.auth().addStateDidChangeListener() { auth, user in
             if user != nil {
                 self.performSegue(withIdentifier: self.loginToTabBar, sender: nil)
             }
@@ -57,7 +57,7 @@ class ViewController: UIViewController {
             self.present(alertController, animated: true, completion: nil)
         }
         //this line of code authenticates user when log-in button is tapped.
-        FIRAuth.auth()!.signIn(withEmail: textFieldLoginEmail.text!,
+        Auth.auth().signIn(withEmail: textFieldLoginEmail.text!,
                                password: textFieldLoginPassword.text!) { user, error in
                                 if error != nil {
                                     let alertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
@@ -81,11 +81,11 @@ class ViewController: UIViewController {
             let emailField = alert.textFields![1]
             let passwordField = alert.textFields![2]
                                         
-            FIRAuth.auth()!.createUser(withEmail: emailField.text!,
+                                        Auth.auth().createUser(withEmail: emailField.text!,
                                         password: passwordField.text!) { user, error in
                     if error == nil {
                         self.ref.child("users").child((user?.uid)!).child("name").setValue(nameField.text)
-                        FIRAuth.auth()!.signIn(withEmail: self.textFieldLoginEmail.text!,
+                        Auth.auth().signIn(withEmail: self.textFieldLoginEmail.text!,
                                                 password: self.textFieldLoginPassword.text!)
                         
                     }

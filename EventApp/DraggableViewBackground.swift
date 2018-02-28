@@ -17,8 +17,8 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, CLLocationManagerD
     var allCards: [DraggableView]!
     
     let MAX_BUFFER_SIZE = 2
-    let CARD_HEIGHT: CGFloat = 386
-    let CARD_WIDTH: CGFloat = 290
+    let CARD_HEIGHT: CGFloat = 420
+    let CARD_WIDTH: CGFloat = 330
     
     var cardsLoadedIndex: Int!
     var loadedCards: [DraggableView]!
@@ -31,7 +31,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, CLLocationManagerD
     var bgImage: UIImageView?
     var topLabel: UILabel!
     
-    var ref: FIRDatabaseReference!
+    var ref: DatabaseReference!
     var userId: String!
     
     var eventList: [Event]!
@@ -51,8 +51,8 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, CLLocationManagerD
         super.init(frame: frame)
         super.layoutSubviews()
         self.setupView()
-        ref = FIRDatabase.database().reference()
-        let user = FIRAuth.auth()?.currentUser
+        ref = Database.database().reference()
+        let user = Auth.auth().currentUser
         userId = user?.uid
         exampleCardLabels = []
         allCards = []
@@ -119,7 +119,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, CLLocationManagerD
     func populateInterestedEvents(){
         print("IN INTERESTED EVENTS")
         self.ref.child("users").child(userId).child("interested_events").observeSingleEvent(of: .value, with: { (snapshot)in
-            for rest in snapshot.children.allObjects as! [FIRDataSnapshot] {
+            for rest in snapshot.children.allObjects as! [DataSnapshot] {
                 self.interestedEvents.append(rest.value as! String)
             }
             self.populateNotInterestedEvents()
@@ -130,7 +130,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, CLLocationManagerD
     func populateNotInterestedEvents(){
         print("IN NOT INTERESTED EVENTS")
         self.ref.child("users").child(userId).child("not_interested_events").observeSingleEvent(of: .value, with: { (snapshot) in
-            for rest in snapshot.children.allObjects as! [FIRDataSnapshot] {
+            for rest in snapshot.children.allObjects as! [DataSnapshot] {
                 self.notInterestedEvents.append(rest.value as! String)
             }
             self.populateEvents()
@@ -140,7 +140,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, CLLocationManagerD
     func populateEvents(){
         print("IN POPULATE EVENTS")
         ref.child("events").observeSingleEvent(of: .value, with: { (snapshot) in
-            for rest in snapshot.children.allObjects as! [FIRDataSnapshot] {
+            for rest in snapshot.children.allObjects as! [DataSnapshot] {
                 //print(rest.key)
                 //print("VALUE: \(rest.value)")
                 let event = Event(snapshot: rest)
@@ -151,19 +151,19 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, CLLocationManagerD
                 var month = "01"
                 var year = "1400"
                 let eDate = event.date
-                if eDate.characters.count == 10 {
+                if eDate.count == 10 {
                     var start = eDate.index(eDate.startIndex, offsetBy: 0)
                     var end = eDate.index(eDate.startIndex, offsetBy: 2)
                     var range = start..<end
-                    month = eDate.substring(with: range)
+                    month = String(eDate[range])
                     start = eDate.index(eDate.startIndex, offsetBy: 3)
                     end = eDate.index(eDate.startIndex, offsetBy: 5)
                     range = start..<end
-                    day = eDate.substring(with: range)
+                    day = String(eDate[range])
                     start = eDate.index(eDate.startIndex, offsetBy: 6)
                     end = eDate.index(eDate.startIndex, offsetBy: 10)
                     range = start..<end
-                    year = eDate.substring(with: range)
+                    year = String(eDate[range])
                 }
                 let dateStr = year+"-"+month+"-"+day
                 let dateEvent = dateFormatter.date(from: dateStr)
@@ -273,7 +273,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, CLLocationManagerD
         self.ref.child("users").child(userId).child("interested_events").childByAutoId().setValue(key)
     }
     
-    func swipeRight() -> Void {
+    @objc func swipeRight() -> Void {
         if loadedCards.count <= 0 {
             return
         }
@@ -286,7 +286,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, CLLocationManagerD
         dragView.rightClickAction()
     }
     
-    func swipeLeft() -> Void {
+    @objc func swipeLeft() -> Void {
         if loadedCards.count <= 0 {
             return
         }

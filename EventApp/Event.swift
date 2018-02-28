@@ -22,7 +22,7 @@ class Event{
     var entryFee:String
     var createdBy:String
     var imageUrl: String
-    let ref: FIRDatabaseReference?
+    let ref: DatabaseReference?
     
     init(date:String, description:String, location:String, latitude:Double, longitude:Double, name:String, startTime:String, endTime:String, entryFee:String, createdBy:String, imageUrl:String) {
         self.date = date
@@ -39,7 +39,7 @@ class Event{
         self.ref = nil
     }
     
-    init(snapshot: FIRDataSnapshot) {
+    init(snapshot: DataSnapshot) {
         let snapshotValue = snapshot.value as! [String: AnyObject]
         date = snapshotValue["date"] as! String
         description = snapshotValue["description"] as! String
