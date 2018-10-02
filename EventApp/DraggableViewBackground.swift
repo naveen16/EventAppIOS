@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import Firebase
 import CoreLocation
-import AlamofireImage
+//import AlamofireImage
 
 class DraggableViewBackground: UIView, DraggableViewDelegate, CLLocationManagerDelegate {
     var exampleCardLabels: [String]!
@@ -95,7 +95,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, CLLocationManagerD
         let imageUrlString = event.imageUrl
         let imageUrl:URL = URL(string: imageUrlString)!
         DispatchQueue.global(qos: .userInitiated).async {
-            let imageData:NSData = NSData(contentsOf: imageUrl)!
+            let imageData:Data = try! Data(contentsOf: imageUrl)
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.CARD_WIDTH, height: self.CARD_HEIGHT-100))
             //imageView.center = draggableView.center
             
